@@ -1,18 +1,5 @@
 import React, {useState} from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import Modal from '@material-ui/core/Modal';
 import MaterialTable from "material-table";
-
 
 export default () => {
     const [rows, setRows] = useState([]);
@@ -20,7 +7,6 @@ export default () => {
     const addHandler = (newData) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                const ms = new Date().getMilliseconds();
                 setRows([...rows, newData]);
                 resolve()
             }, 1000)
@@ -45,7 +31,6 @@ export default () => {
                 resolve();
             }, 1000)
         });
-
     };
 
     return (
@@ -59,7 +44,7 @@ export default () => {
                     }
                 }
                 columns={[
-                    {title: "Id", field: "id", type: "numeric"},
+                    {title: "Id", field: "id", type: "numeric", editable: 'onAdd'},
                     {title: "Name", field: "name"},
                     {title: "Description", field: "description"},
                 ]}
