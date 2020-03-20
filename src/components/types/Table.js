@@ -6,30 +6,24 @@ export default () => {
 
     const addHandler = (newData) => {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                setRows([...rows, newData]);
-                resolve()
-            }, 1000)
+            setRows([...rows, newData]);
+            resolve()
         })
     };
 
     const deleteHandler = (data) => {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                setRows(rows.filter(row => row.id != data.id));
-                resolve()
-            }, 1000)
+            setRows(rows.filter(row => row.id !== data.id));
+            resolve();
         })
     };
 
     const updateHandler = (newData, oldData) => {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const idxOld = rows.indexOf(oldData);
-                rows[idxOld] = newData;
-                setRows([...rows]);
-                resolve();
-            }, 1000)
+            const idxOld = rows.indexOf(oldData);
+            rows[idxOld] = newData;
+            setRows([...rows]);
+            resolve();
         });
     };
 
@@ -54,6 +48,3 @@ export default () => {
         </div>
     );
 }
-
-
-
