@@ -14,59 +14,56 @@ import Modal from '@material-ui/core/Modal';
 import MaterialTable from "material-table";
 
 
-function removeRow(rows, id) {
-    return rows.filter(row => row.id != id);
-}
-
-function createData(id, name, description) {
-    return {id, name, description};
-}
-
 export default () => {
     const [rows, setRows] = useState([]);
 
-    const addHandler = () => {
-        const ms = new Date().getMilliseconds();
-        setRows([...rows, createData(ms, "name_" + ms, "description for " + ms)])
+    const addHandler = (newData) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const ms = new Date().getMilliseconds();
+                setRows([...rows, newData]);
+                resolve()
+            }, 1000)
+        })
     };
 
-    const removeHandler = (id) => {
-        setRows(removeRow(rows, id))
+    const deleteHandler = (data) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                setRows(rows.filter(row => row.id != data.id));
+                resolve()
+            }, 1000)
+        })
     };
 
-    const editHandler = (id) => {
-        console.log("Editing " + id)
+    const updateHandler = (newData, oldData) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const idxOld = rows.indexOf(oldData);
+                rows[idxOld] = newData;
+                setRows([...rows]);
+                resolve();
+            }, 1000)
+        });
+
     };
 
     return (
         <div style={{maxWidth: "100%"}}>
             <MaterialTable
-                actions={
-                    [
-                        {
-                            icon: 'add',
-                            tooltip: 'Add User',
-                            isFreeAction: true,
-                            onClick: (event) => addHandler()
-                        },
-                        {
-                            icon: "edit",
-                            tooltip: "Edit transaction type",
-                            onClick: (event, rowData) => editHandler(rowData.id)
-                        },
-                        {
-                            icon: "delete",
-                            tooltip: "Delete transaction type",
-                            onClick: (event, rowData) => removeHandler(rowData.id)
-                        },
-                    ]
+                editable={
+                    {
+                        onRowAdd: newData => addHandler(newData),
+                        onRowUpdate: (newData, oldData) => updateHandler(newData, oldData),
+                        onRowDelete: oldData => deleteHandler(oldData)
+                    }
                 }
                 columns={[
                     {title: "Id", field: "id", type: "numeric"},
                     {title: "Name", field: "name"},
                     {title: "Description", field: "description"},
                 ]}
-                data={ rows }
+                data={rows}
                 title="Transaction types"
             />
         </div>
